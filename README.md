@@ -1,8 +1,6 @@
 # Full-Stack-Open
 University of Helsinki - Full Stack Open 2021
 
-Full Stack Open
-
 | Part | Status |
 |------|--------|
 | 0    | ✅      |
