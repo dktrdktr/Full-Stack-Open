@@ -8,6 +8,24 @@ const Display = ({ text, value }) => (
   </p>
 );
 
+const Statistics = (props) => {
+  const ratingsTally = props.values;
+  console.log(ratingsTally);
+  let ratings = [];
+  for (let i = 0; i < ratingsTally[0]; i++) ratings.push(1);
+  for (let i = 0; i < ratingsTally[1]; i++) ratings.push(0);
+  for (let i = 0; i < ratingsTally[2]; i++) ratings.push(-1);
+  const avg = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+  const pos = (ratingsTally[0] / ratingsTally.reduce((a, b) => a + b, 0)) * 100;
+
+  return (
+    <>
+      <p>avg {avg}</p>
+      <p>positive {pos} %</p>
+    </>
+  );
+};
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
@@ -28,6 +46,8 @@ const App = () => {
       <Display text="good" value={good} />
       <Display text="neutral" value={neutral} />
       <Display text="bad" value={bad} />
+      <Display text="all" value={good + neutral + bad} />
+      <Statistics values={[good, neutral, bad]} />
     </div>
   );
 };
