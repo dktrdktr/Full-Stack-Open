@@ -2,10 +2,13 @@ import React, { useState } from "react";
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
-const StatisticLine = ({ text, value }) => (
-  <p>
-    {text} {value}
-  </p>
+const StatisticLine = ({ text, value, symbol }) => (
+  <tr>
+    <td>{text}</td>
+    <td>
+      {value} {symbol}
+    </td>
+  </tr>
 );
 
 const Statistics = (props) => {
@@ -25,8 +28,19 @@ const Statistics = (props) => {
 
   return (
     <>
-      <StatisticLine text="avg" value={avg} />
-      <StatisticLine text="positive %" value={pos} />
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={ratingsTally[0]} />
+          <StatisticLine text="neutral" value={ratingsTally[1]} />
+          <StatisticLine text="bad" value={ratingsTally[2]} />
+          <StatisticLine
+            text="all"
+            value={ratingsTally[0] + ratingsTally[1] + ratingsTally[2]}
+          />
+          <StatisticLine text="avg" value={avg} />
+          <StatisticLine text="positive" value={pos} symbol={"%"} />
+        </tbody>
+      </table>
     </>
   );
 };
@@ -37,21 +51,17 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-  const setGoodH = () => setGood(good + 1);
-  const setNeutralH = () => setNeutral(neutral + 1);
-  const setBadH = () => setBad(bad + 1);
+  const setGoodHandler = () => setGood(good + 1);
+  const setNeutralHandler = () => setNeutral(neutral + 1);
+  const setBadHandler = () => setBad(bad + 1);
 
   return (
     <div>
       <h1>give feedback</h1>
-      <Button onClick={setGoodH} text="good" />
-      <Button onClick={setNeutralH} text="neutral" />
-      <Button onClick={setBadH} text="bad" />
+      <Button onClick={setGoodHandler} text="good" />
+      <Button onClick={setNeutralHandler} text="neutral" />
+      <Button onClick={setBadHandler} text="bad" />
       <h1>statistics</h1>
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
-      <StatisticLine text="all" value={good + neutral + bad} />
       <Statistics values={[good, neutral, bad]} />
     </div>
   );
