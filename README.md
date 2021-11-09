@@ -4,6 +4,7 @@ University of Helsinki - Full Stack Open 2021
 | Part | Status |
 |------|--------|
 | 0    | ✅      |
+| 1    | 🚫      |
 | 2    | 🚫      |
 | 3    | 🚫      |
 | 4    | 🚫      |
