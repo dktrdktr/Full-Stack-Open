@@ -10,6 +10,11 @@ const Display = ({ text, value }) => (
 
 const Statistics = (props) => {
   const ratingsTally = props.values;
+
+  if (ratingsTally.every((x) => x === 0)) {
+    return <p>No Feedback Given</p>;
+  }
+
   console.log(ratingsTally);
   let ratings = [];
   for (let i = 0; i < ratingsTally[0]; i++) ratings.push(1);
