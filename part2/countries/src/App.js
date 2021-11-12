@@ -10,7 +10,6 @@ const App = () => {
   const [showCountry, setShowCountry] = useState({});
 
   useEffect(() => {
-    console.log("effect");
     axios.get("https://restcountries.com/v3.1/all").then((response) => {
       setCountries(response.data);
     });
@@ -56,7 +55,12 @@ const App = () => {
       ) : (
         renderCountries()
       )}
-      <CountryView country={showCountry} />
+      {Object.keys(showCountry).length === 0 ? (
+        <></>
+      ) : (
+        <CountryView country={showCountry} />
+      )}
+      {/* {console.log(showCountry)} */}
     </div>
   );
 };
