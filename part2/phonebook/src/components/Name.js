@@ -8,7 +8,6 @@ const Name = ({ person, handlePersonDelete }) => {
 
   return (
     <li>
-      {console.log("render Name")}
       {person.name} {person.number}{" "}
       <button value={person.id} onClick={handleDelete}>
         delete
