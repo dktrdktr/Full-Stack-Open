@@ -1,11 +1,15 @@
 import React from "react";
 import Name from "./Name";
 
-const Persons = ({ persons }) => {
+const Persons = ({ personsToShow, handlePersonDelete }) => {
   return (
     <ul>
-      {persons.map((person) => (
-        <Name key={person.name} name={person} />
+      {personsToShow.map((person) => (
+        <Name
+          key={person.name}
+          person={person}
+          handlePersonDelete={handlePersonDelete}
+        />
       ))}
     </ul>
   );
