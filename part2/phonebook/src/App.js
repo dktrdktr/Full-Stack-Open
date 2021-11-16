@@ -3,10 +3,12 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personService from "./services/names";
+import Notification from "./components/Notification";
 
 const App = () => {
   // ** State Variables **
   const [persons, setPersons] = useState([]);
+  const [message, setMessage] = useState(null);
   // User input
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
@@ -47,9 +49,19 @@ const App = () => {
             );
             setNewName("");
             setNewNumber("");
+            setMessage([`Updated ${returnedPerson.name}`, "success"]);
+            setTimeout(() => {
+              setMessage(null);
+            }, 3000);
           })
-          .catch((error) => {
-            console.log(error);
+          .catch((err) => {
+            setMessage([
+              `${persons[matchedNameIndex].name} was already removed from server`,
+              "error",
+            ]);
+            setTimeout(() => {
+              setMessage(null);
+            }, 3000);
           });
       }
     } else {
@@ -60,6 +72,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson));
           setNewName("");
           setNewNumber("");
+          setMessage([`Added ${returnedPerson.name}`, "success"]);
+          setTimeout(() => {
+            setMessage(null);
+          }, 3000);
         })
         .catch((error) => {
           console.log(error);
@@ -80,19 +96,27 @@ const App = () => {
   );
 
   // Event handler for deleting an entry (called from the Name component within Persons component)
-  const handlePersonDelete = (personid) => {
+  const handlePersonDelete = (person) => {
     personService
-      .deleteEntry(personid)
+      .deleteEntry(person.id)
       .then((response) => {
-        setPersons(persons.filter((x) => x.id !== personid));
+        setPersons(persons.filter((x) => x.id !== person.id));
+        setMessage([`${person.name} has been successfully deleted`, "success"]);
+        setTimeout(() => {
+          setMessage(null);
+        }, 3000);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        setMessage([`${person.name} is not in the database`, "error"]);
+        setTimeout(() => {
+          setMessage(null);
+        }, 3000);
       });
   };
 
   return (
     <div>
+      <Notification message={message} />
       <h2>Phonebook</h2>
       <Filter value={newFilter} onChange={handleFilterChange} />
       <h2>Add a new one</h2>
@@ -107,6 +131,7 @@ const App = () => {
       <Persons
         personsToShow={namesToShow}
         handlePersonDelete={handlePersonDelete}
+        setMessage={setMessage}
       />
     </div>
   );
