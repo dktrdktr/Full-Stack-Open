@@ -3,7 +3,6 @@ const Notification = ({ message }) => {
     return null;
   }
 
-  // return <div className="success">{message[0]}</div>;
   return <div className={`notification ${message[1]}`}>{message[0]}</div>;
 };
 

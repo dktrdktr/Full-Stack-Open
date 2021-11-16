@@ -31,11 +31,6 @@
       "id": 15
     },
     {
-      "name": "asf",
-      "number": "22",
-      "id": 16
-    },
-    {
       "name": "Alex",
       "number": "323",
       "id": 18
@@ -54,6 +49,11 @@
       "name": "Mykolas",
       "number": "765",
       "id": 21
+    },
+    {
+      "name": "Pjo",
+      "number": "11",
+      "id": 22
     }
   ]
 }

@@ -6,7 +6,6 @@ import personService from "./services/names";
 import Notification from "./components/Notification";
 
 const App = () => {
-  // ** State Variables **
   const [persons, setPersons] = useState([]);
   const [message, setMessage] = useState(null);
   // User input
@@ -28,7 +27,6 @@ const App = () => {
       number: newNumber,
     };
     event.preventDefault();
-    // if (persons.some((x) => x.name.includes(newName))) {
     if (persons.some((x) => x.name.toLowerCase() === newName.toLowerCase())) {
       const result = window.confirm(
         `${newName} is already added to phonebook, replace the old number with a new one?`
@@ -65,7 +63,6 @@ const App = () => {
           });
       }
     } else {
-      //Add the data to the server and set the state variables
       personService
         .create(nameObject)
         .then((returnedPerson) => {
