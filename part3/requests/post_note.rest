@@ -1,0 +1,10 @@
+POST https://desolate-crag-74679.herokuapp.com/api/persons/
+Content-Type: application/json
+
+{
+  "name": "Du",
+  "number": "12" 
+}
+
+
+
