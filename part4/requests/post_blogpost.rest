@@ -2,11 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "First Drum",
-  "author": "Timothy Leningrad",
-  "url": "www.google.lt",
-  "likes": 1
+  "title": "Edites Thoughts",
+  "author": "Oliver Lamarck",
+  "url": "www.google.ru"
 }
-
 
 
