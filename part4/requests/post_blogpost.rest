@@ -3,10 +3,9 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InlvbmVkYWxlbW1hIiwiaWQiOiI2MWE2NDMxZmNlYTE1MGMwY2UwMzg1ZDAiLCJpYXQiOjE2MzgyOTQ5MTN9.cj0BMYwLGBzUqitnHu7EZ6tAbzhOvFZRbb5qwxX8Kck
 
 {
-  "title": "Incas",
-  "author": "Michaux",
-  "url": "www.google.lt",
-  "userId": "61a6431fcea150c0ce0385d0"
+  "title": "Divine Horsemen",
+  "author": "Maya Deren",
+  "url": "www.google.lt"
 }
 
 

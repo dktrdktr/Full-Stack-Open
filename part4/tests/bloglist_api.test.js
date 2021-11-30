@@ -2,28 +2,17 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blogpost");
+const User = require("../models/user");
 const api = supertest(app);
+const helper = require("./test_helper");
+const bcrypt = require("bcrypt");
 
-const initialBlogs = [
-  {
-    title: "Last Bicycle",
-    author: "Alain Dunkirk",
-    url: "www.google.lt",
-    likes: 12,
-  },
-  {
-    title: "First Drum",
-    author: "Timothy Leningrad",
-    url: "www.google.lt",
-    likes: 10,
-  },
-];
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(initialBlogs[1]);
-  await blogObject.save();
+
+  const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
+  const promiseArray = blogObjects.map((blog) => blog.save());
+  await Promise.all(promiseArray);
 });
 
 test("there are two blogposts", async () => {
@@ -37,7 +26,7 @@ test("unique identifier property of the blog posts is named id", async () => {
   response.body.map((item) => expect(item.id).toBeDefined());
 });
 
-test("POST: a valid blogpost can be added", async () => {
+test("POST: cannot add a blogpost without a valid token", async () => {
   const newBlogpost = {
     title: "Limits of Life",
     author: "Moby Dick",
@@ -48,6 +37,35 @@ test("POST: a valid blogpost can be added", async () => {
   await api
     .post("/api/blogs")
     .send(newBlogpost)
+    .expect(401)
+    .expect("Content-Type", /application\/json/);
+});
+
+test("POST: a valid blogpost can be added", async () => {
+  const newBlogpost = {
+    title: "Limits of Life",
+    author: "Moby Dick",
+    url: "www.wikipedia.com",
+    likes: 5,
+  };
+
+  await User.deleteMany({});
+
+  let newUser = {
+    username: "Zazu",
+    password: "abrakadabra",
+  };
+
+  const passwordHash = await bcrypt.hash(newUser.password, 10);
+  const user = new User({ username: newUser.username, passwordHash });
+  await user.save();
+
+  const loginResponse = await api.post("/api/login").send(newUser);
+
+  await api
+    .post("/api/blogs")
+    .set("Authorization", `bearer ${loginResponse.body.token}`)
+    .send(newBlogpost)
     .expect(201)
     .expect("Content-Type", /application\/json/);
 
@@ -55,20 +73,34 @@ test("POST: a valid blogpost can be added", async () => {
 
   const contents = response.body.map((r) => r.title);
 
-  expect(response.body).toHaveLength(initialBlogs.length + 1);
+  expect(response.body).toHaveLength(helper.initialBlogs.length + 1);
   expect(contents).toContain("Limits of Life");
 });
 
 test("POST: likes defaults to 0", async () => {
-  const newPost = {
+  const newBlogpost = {
     title: "Edites Thoughts",
     author: "Oliver Lamarck",
-    url: "www.google.ru",
+    url: "www.google.lt",
   };
+
+  await User.deleteMany({});
+
+  let newUser = {
+    username: "Zazu",
+    password: "abrakadabra",
+  };
+
+  const passwordHash = await bcrypt.hash(newUser.password, 10);
+  const user = new User({ username: newUser.username, passwordHash });
+  await user.save();
+
+  const loginResponse = await api.post("/api/login").send(newUser);
 
   await api
     .post("/api/blogs")
-    .send(newPost)
+    .set("Authorization", `bearer ${loginResponse.body.token}`)
+    .send(newBlogpost)
     .expect(201)
     .expect("Content-Type", /application\/json/);
 
