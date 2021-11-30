@@ -8,7 +8,6 @@ const loginRouter = require("./controllers/loginRouter");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
 const middleware = require("./utils/middleware");
-const userExtractor = require("./utils/userExtractor");
 
 logger.info("connecting to", config.MONGODB_URI);
 
@@ -30,7 +29,7 @@ app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
 app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
-app.use("/api/blogs", userExtractor.userExtractor, blogRouter);
+app.use("/api/blogs", middleware.userExtractor, blogRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
