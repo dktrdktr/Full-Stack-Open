@@ -26,7 +26,7 @@ beforeEach(async () => {
   await blogObject.save();
 });
 
-test("there are two notes", async () => {
+test("there are two blogposts", async () => {
   const response = await api.get("/api/blogs");
 
   expect(response.body).toHaveLength(2);
@@ -75,10 +75,6 @@ test("POST: likes defaults to 0", async () => {
   const blog = await Blog.find({ title: "Edites Thoughts" });
 
   expect(blog[0].likes).toBe(0);
-});
-
-afterAll(() => {
-  mongoose.connection.close();
 });
 
 test("POST: if the title and url are missing, the backend responds with 400 Bad Request", async () => {
